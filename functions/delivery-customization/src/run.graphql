@@ -1,0 +1,32 @@
+# Input query for the delivery customization function.
+
+query RunInput {
+  cart {
+    lines {
+      quantity
+      merchandise {
+        __typename
+        ... on ProductVariant {
+          id
+          product {
+            # Alias the metafield so the JavaScript stays readable.
+            madeToOrder: metafield(namespace: "custom", key: "made_to_order") {
+              value
+            }
+          }
+        }
+      }
+    }
+
+    deliveryGroups {
+      deliveryOptions {
+        handle
+        title
+        cost {
+          amount
+          currencyCode
+        }
+      }
+    }
+  }
+}
