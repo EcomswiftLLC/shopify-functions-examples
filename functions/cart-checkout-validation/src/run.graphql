@@ -1,0 +1,40 @@
+# Input query for the cart and checkout validation function.
+
+query RunInput {
+  cart {
+    cost {
+      subtotalAmount {
+        amount
+        currencyCode
+      }
+    }
+
+    buyerIdentity {
+      customer {
+        id
+        wholesale: metafield(namespace: "custom", key: "wholesale_account") {
+          value
+        }
+      }
+    }
+
+    lines {
+      quantity
+      merchandise {
+        __typename
+        ... on ProductVariant {
+          id
+          product {
+            title
+            purchaseLimit: metafield(namespace: "custom", key: "purchase_limit") {
+              value
+            }
+            wholesaleOnly: metafield(namespace: "custom", key: "wholesale_only") {
+              value
+            }
+          }
+        }
+      }
+    }
+  }
+}
