@@ -1,0 +1,36 @@
+# Input query for the volume discount function.
+#
+# Keep this query as small as possible. Every field you request is serialised
+# into the function input, and functions have a hard instruction and memory
+# budget - unused fields are the easiest performance win to give away.
+
+query RunInput {
+  cart {
+    lines {
+      id
+      quantity
+      cost {
+        amountPerQuantity {
+          amount
+        }
+      }
+      merchandise {
+        __typename
+        ... on ProductVariant {
+          id
+          product {
+            id
+          }
+        }
+      }
+    }
+  }
+
+  # Merchant configured tiers. Reading settings from a metafield keeps the
+  # function generic, so one deploy serves every discount the merchant creates.
+  discountNode {
+    metafield(namespace: "$app:volume-discount", key: "tiers") {
+      value
+    }
+  }
+}
