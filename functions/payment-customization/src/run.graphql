@@ -1,0 +1,24 @@
+# Input query for the payment customization function.
+
+query RunInput {
+  cart {
+    cost {
+      totalAmount {
+        amount
+        currencyCode
+      }
+    }
+  }
+
+  paymentMethods {
+    id
+    name
+  }
+
+  # Spend limit above which cash on delivery is hidden.
+  paymentCustomization {
+    metafield(namespace: "$app:payment-customization", key: "cod_limit") {
+      value
+    }
+  }
+}
